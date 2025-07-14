@@ -6,6 +6,10 @@ from django.contrib.auth import login as auth_login, logout as auth_logout, auth
 from .forms import RegisterForm, EngineerForm, AssetForm
 from .models import Engineer, Asset
 
+
+from .models import Mission, ThreatLog
+from .forms import MissionForm, ThreatLogForm
+
 # User Register
 def register(request):
     if request.method == 'POST':
@@ -102,3 +106,53 @@ def asset_delete(request, pk):
     asset = Asset.objects.get(pk=pk)
     asset.delete()
     return redirect('asset_list')
+
+
+@login_required
+def mission_list(request):
+    missions = Mission.objects.all()
+    return render(request, 'core/mission_list.html', {'missions': missions})
+
+@login_required
+def mission_create(request):
+    form = MissionForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('mission_list')
+    return render(request, 'core/mission_form.html', {'form': form})
+
+@login_required
+def mission_update(request, pk):
+    mission = Mission.objects.get(pk=pk)
+    form = MissionForm(request.POST or None, instance=mission)
+    if form.is_valid():
+        form.save()
+        return redirect('mission_list')
+    return render(request, 'core/mission_form.html', {'form': form})
+
+@login_required
+def mission_delete(request, pk):
+    Mission.objects.get(pk=pk).delete()
+    return redirect('mission_list')
+
+# =============================
+# THREAT LOGS
+# =============================
+
+@login_required
+def threat_list(request):
+    threats = ThreatLog.objects.all()
+    return render(request, 'core/threat_list.html', {'threats': threats})
+
+@login_required
+def threat_create(request):
+    form = ThreatLogForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('threat_list')
+    return render(request, 'core/threat_form.html', {'form': form})
+
+@login_required
+def threat_delete(request, pk):
+    ThreatLog.objects.get(pk=pk).delete()
+    return redirect('threat_list')

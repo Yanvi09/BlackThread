@@ -21,5 +21,35 @@ class Asset(models.Model):
     ])
     added_on = models.DateField(auto_now_add=True)
 
+class Mission(models.Model):
+    title = models.CharField(max_length=100)
+    location = models.CharField(max_length=100)
+    urgency = models.CharField(max_length=20, choices=[
+        ('Low', 'Low'), ('Medium', 'Medium'), ('High', 'High'), ('Critical', 'Critical')
+    ])
+    status = models.CharField(max_length=20, choices=[
+        ('Planned', 'Planned'),
+        ('Ongoing', 'Ongoing'),
+        ('Completed', 'Completed')
+    ])
+    assigned_engineers = models.ManyToManyField(Engineer, blank=True)
+    assets_used = models.ManyToManyField(Asset, blank=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
-        return f"{self.name} ({self.category})"
+        return self.title
+
+class ThreatLog(models.Model):
+    mission = models.ForeignKey(Mission, on_delete=models.CASCADE)
+    description = models.TextField()
+    level = models.CharField(max_length=20, choices=[
+        ('Info', 'Info'),
+        ('Caution', 'Caution'),
+        ('Severe', 'Severe'),
+        ('Critical', 'Critical'),
+    ])
+    reported_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.level} Threat - {self.mission.title}"
+
