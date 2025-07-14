@@ -1,7 +1,12 @@
 from django.shortcuts import render, redirect
-from .forms import RegisterForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login as auth_login, logout as auth_logout, authenticate
 
+from .forms import RegisterForm, EngineerForm, AssetForm
+from .models import Engineer, Asset
+
+# User Register
 def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
@@ -12,6 +17,88 @@ def register(request):
         form = RegisterForm()
     return render(request, 'core/register.html', {'form': form})
 
+# User Login
+def login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            auth_login(request, user)
+            return redirect('dashboard')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'core/login.html', {'form': form})
+
+# Logout
+def logout(request):
+    auth_logout(request)
+    return redirect('login')
+
+# Dashboard
 @login_required
 def dashboard(request):
     return render(request, 'core/dashboard.html')
+
+# =============================
+# ENGINEERS
+# =============================
+
+@login_required
+def engineer_list(request):
+    engineers = Engineer.objects.all()
+    return render(request, 'core/engineer_list.html', {'engineers': engineers})
+
+@login_required
+def engineer_create(request):
+    form = EngineerForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('engineer_list')
+    return render(request, 'core/engineer_form.html', {'form': form})
+
+@login_required
+def engineer_update(request, pk):
+    engineer = Engineer.objects.get(pk=pk)
+    form = EngineerForm(request.POST or None, instance=engineer)
+    if form.is_valid():
+        form.save()
+        return redirect('engineer_list')
+    return render(request, 'core/engineer_form.html', {'form': form})
+
+@login_required
+def engineer_delete(request, pk):
+    engineer = Engineer.objects.get(pk=pk)
+    engineer.delete()
+    return redirect('engineer_list')
+
+# =============================
+# ASSETS
+# =============================
+
+@login_required
+def asset_list(request):
+    assets = Asset.objects.all()
+    return render(request, 'core/asset_list.html', {'assets': assets})
+
+@login_required
+def asset_create(request):
+    form = AssetForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('asset_list')
+    return render(request, 'core/asset_form.html', {'form': form})
+
+@login_required
+def asset_update(request, pk):
+    asset = Asset.objects.get(pk=pk)
+    form = AssetForm(request.POST or None, instance=asset)
+    if form.is_valid():
+        form.save()
+        return redirect('asset_list')
+    return render(request, 'core/asset_form.html', {'form': form})
+
+@login_required
+def asset_delete(request, pk):
+    asset = Asset.objects.get(pk=pk)
+    asset.delete()
+    return redirect('asset_list')
