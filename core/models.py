@@ -21,6 +21,9 @@ class Asset(models.Model):
     ])
     added_on = models.DateField(auto_now_add=True)
 
+    def __str__(self):
+        return self.name
+
 class Mission(models.Model):
     title = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
@@ -53,3 +56,9 @@ class ThreatLog(models.Model):
     def __str__(self):
         return f"{self.level} Threat - {self.mission.title}"
 
+class ActivityLog(models.Model):
+    action = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.action} at {self.timestamp}"

@@ -6,15 +6,52 @@
     <title>Document</title>
 </head>
 <body>
-    {% extends 'core/base.html' %}
+   {% extends 'core/base.html' %}
 {% block content %}
-<h2>{{ form.instance.pk|yesno:"Edit Engineer,Add Engineer" }}</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-success">Save</button>
-</form>
+<h2>🧠 BlackThread Intel Dashboard</h2>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <h4>⚠️ Critical Threats</h4>
+        <ul class="list-group">
+            {% for threat in critical_threats %}
+            <li class="list-group-item bg-danger text-white">
+                {{ threat.mission.title }} - {{ threat.level }}
+            </li>
+            {% empty %}
+            <li class="list-group-item">No critical threats.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-md-4">
+        <h4>🎯 Recent Missions</h4>
+        <ul class="list-group">
+            {% for m in missions %}
+            <li class="list-group-item">
+                {{ m.title }} — <small>{{ m.status }}</small>
+            </li>
+            {% empty %}
+            <li class="list-group-item">No missions yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-md-4">
+        <h4>🪪 System Logs</h4>
+        <ul class="list-group">
+            {% for log in logs %}
+            <li class="list-group-item">
+                {{ log.action }} <br><small class="text-muted">{{ log.timestamp }}</small>
+            </li>
+            {% empty %}
+            <li class="list-group-item">No logs yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 {% endblock %}
+
 
 </body>
 </html>
