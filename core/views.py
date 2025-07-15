@@ -4,6 +4,7 @@ from .forms import RegisterForm, EngineerForm, AssetForm, MissionForm, ThreatLog
 from .models import Engineer, Asset, Mission, ThreatLog, ActivityLog
 from django.contrib.auth import login as auth_login, logout as auth_logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
+from .models import ActivityLog
 
 # Register view
 def register(request):
@@ -45,7 +46,7 @@ def dashboard(request):
         'critical_threats': critical_threats,
         'logs': recent_logs
     }
-    return render(request, 'core/dashboard.html', context)
+    return render(request, 'core/dashboard.html')
 
 # Engineer CRUD
 @login_required
@@ -198,3 +199,8 @@ def dashboard(request):
         'logs': recent_logs
     }
     return render(request, 'core/dashboard.html', context)
+
+@login_required
+def activity_logs(request):
+    logs = ActivityLog.objects.all().order_by('-timestamp')
+    return render(request, 'core/activity_logs.html', {'logs': logs})

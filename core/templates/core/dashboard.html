@@ -6,79 +6,70 @@
     <title>Document</title>
 </head>
 <body>
-{% extends 'core/base.html' %}
+    {% extends 'core/base.html' %}
+
 {% block content %}
-<h2 class="mb-4 fw-bold text-info">🧠 BlackThread: Stark Ops Panel</h2>
+<div class="container py-4 text-light">
+    <h2 class="text-center mb-5">🧠 BlackThread: Secure Ops Dashboard</h2>
 
-<div class="row g-4">
-
-    <!-- Recent Missions -->
-    <div class="col-md-6">
-        <div class="card border-info shadow bg-black text-light">
-            <div class="card-header bg-transparent border-info text-info">
-                <strong>🛰️ Recent Missions</strong>
+    <div class="row g-4">
+        <!-- Engineer Management -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card bg-secondary bg-opacity-10 border-light shadow-lg rounded-4 h-100">
+                <div class="card-body">
+                    <h4 class="card-title text-info">🧑‍💻 Engineers</h4>
+                    <p class="card-text">Track and manage field operatives.</p>
+                    <a href="{% url 'engineer_list' %}" class="btn btn-outline-info btn-sm">Launch</a>
+                </div>
             </div>
-            <ul class="list-group list-group-flush">
-                {% for mission in missions %}
-                <li class="list-group-item bg-dark text-white border-bottom border-info">
-                    <strong class="text-info">{{ mission.title }}</strong> — {{ mission.status }}
-                    <br>
-                    <small class="text-muted">📍 {{ mission.location }} | 🕒 {{ mission.created_on|date:"M d, H:i" }}</small>
-                </li>
-                {% empty %}
-                <li class="list-group-item bg-dark text-muted">No recent missions.</li>
-                {% endfor %}
-            </ul>
+        </div>
+
+        <!-- Asset Tracker -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card bg-secondary bg-opacity-10 border-light shadow-lg rounded-4 h-100">
+                <div class="card-body">
+                    <h4 class="card-title text-warning">🧰 Assets</h4>
+                    <p class="card-text">Inventory of tech & field tools.</p>
+                    <a href="{% url 'asset_list' %}" class="btn btn-outline-warning btn-sm">Launch</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Missions -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card bg-secondary bg-opacity-10 border-light shadow-lg rounded-4 h-100">
+                <div class="card-body">
+                    <h4 class="card-title text-success">🎯 Missions</h4>
+                    <p class="card-text">Plan & assign tactical objectives.</p>
+                    <a href="{% url 'mission_list' %}" class="btn btn-outline-success btn-sm">Launch</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Threat Log -->
+        <div class="col-md-6 col-lg-6">
+            <div class="card bg-danger bg-opacity-25 border-danger shadow-lg rounded-4 h-100">
+                <div class="card-body">
+                    <h4 class="card-title text-danger">🚨 Threat Logs</h4>
+                    <p class="card-text">Review all incoming threat signals.</p>
+                    <a href="{% url 'threat_list' %}" class="btn btn-danger btn-sm">View</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Logs -->
+        <div class="col-md-6 col-lg-6">
+            <div class="card bg-dark bg-opacity-50 border-light shadow-lg rounded-4 h-100">
+                <div class="card-body">
+                    <h4 class="card-title text-light">📋 Activity Logs</h4>
+                    <p class="card-text">Every action across the system.</p>
+                    <a href="{% url 'activity_logs' %}" class="btn btn-outline-light btn-sm">Inspect</a>
+                </div>
+            </div>
         </div>
     </div>
-
-    <!-- Critical Threats -->
-    <div class="col-md-6">
-        <div class="card border-danger shadow bg-black text-light">
-            <div class="card-header bg-transparent border-danger text-danger">
-                <strong>🚨 Critical Threats</strong>
-            </div>
-            <ul class="list-group list-group-flush">
-                {% for threat in critical_threats %}
-                <li class="list-group-item bg-dark text-white border-bottom border-danger">
-                    <strong class="text-danger">{{ threat.mission.title }}</strong> – {{ threat.level }}
-                    <br>
-                    {{ threat.description|truncatechars:80 }}
-                    <br>
-                    <small class="text-muted">🕒 {{ threat.reported_on|date:"M d, H:i" }}</small>
-                </li>
-                {% empty %}
-                <li class="list-group-item bg-dark text-muted">No critical threats.</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-
-    <!-- Activity Logs -->
-    <div class="col-12">
-        <div class="card border-light shadow bg-black text-light">
-            <div class="card-header bg-transparent border-light text-light">
-                <strong>📜 Activity Logs</strong>
-            </div>
-            <ul class="list-group list-group-flush">
-                {% for log in logs %}
-                <li class="list-group-item bg-dark text-white border-bottom border-secondary">
-                    {{ log.action }}
-                    <br>
-                    <small class="text-muted">🕒 {{ log.timestamp|date:"M d, H:i" }}</small>
-                </li>
-                {% empty %}
-                <li class="list-group-item bg-dark text-muted">No logs recorded yet.</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-
 </div>
 {% endblock %}
 
-
-
-    
 </body>
 </html>

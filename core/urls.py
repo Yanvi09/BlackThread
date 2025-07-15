@@ -36,5 +36,10 @@ urlpatterns = [
     path('threats/create/', views.threat_create, name='threat_create'),
     path('threats/<int:pk>/delete/', views.threat_delete, name='threat_delete'),
 
-    path('', include(router.urls)), 
+    path('', include(router.urls)),
+
+    path('logs/', views.activity_logs, name='activity_logs'),
+
+    path('dashboard/', views.dashboard, name='dashboard'),
+
 ]
