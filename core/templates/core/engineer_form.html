@@ -8,46 +8,103 @@
 <body>
    {% extends 'core/base.html' %}
 {% block content %}
-<h2>🧠 BlackThread Intel Dashboard</h2>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .glow-title {
+        color: #00ffff;
+        font-weight: bold;
+        font-size: 2rem;
+        animation: flicker 2s infinite alternate;
+        text-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+    }
 
-<div class="row mt-4">
-    <div class="col-md-4">
-        <h4>⚠️ Critical Threats</h4>
-        <ul class="list-group">
-            {% for threat in critical_threats %}
-            <li class="list-group-item bg-danger text-white">
-                {{ threat.mission.title }} - {{ threat.level }}
-            </li>
-            {% empty %}
-            <li class="list-group-item">No critical threats.</li>
-            {% endfor %}
-        </ul>
+    @keyframes flicker {
+        0% { opacity: 1; text-shadow: 0 0 5px #0ff, 0 0 10px #0ff; }
+        50% { opacity: 0.8; text-shadow: 0 0 8px #0ff, 0 0 12px #0ff; }
+        100% { opacity: 1; text-shadow: 0 0 5px #0ff, 0 0 10px #0ff; }
+    }
+
+    .dashboard-card {
+        background-color: #111 !important;
+        border: 1px solid #444;
+        border-radius: 8px;
+        box-shadow: 0 0 12px #0ff3;
+    }
+
+    .dashboard-header {
+        border-bottom: 1px solid #333;
+        color: #0ff;
+        background-color: transparent;
+        font-weight: 600;
+    }
+
+    .highlight {
+        color: #ff004f;
+    }
+</style>
+
+<h2 class="glow-title mb-4">🧠 BLACKTHREAD OPS CENTER</h2>
+
+<div class="row g-4">
+
+    <!-- Missions -->
+    <div class="col-md-6">
+        <div class="card dashboard-card text-light">
+            <div class="card-header dashboard-header">
+                🛰️ Latest Missions
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for mission in missions %}
+                <li class="list-group-item bg-dark text-white border-bottom border-info">
+                    <strong class="text-info">{{ mission.title }}</strong> – {{ mission.status }}
+                    <br><small class="text-muted">📍 {{ mission.location }} | 🕒 {{ mission.created_on|date:"M d, H:i" }}</small>
+                </li>
+                {% empty %}
+                <li class="list-group-item bg-dark text-muted">No recent missions.</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 
-    <div class="col-md-4">
-        <h4>🎯 Recent Missions</h4>
-        <ul class="list-group">
-            {% for m in missions %}
-            <li class="list-group-item">
-                {{ m.title }} — <small>{{ m.status }}</small>
-            </li>
-            {% empty %}
-            <li class="list-group-item">No missions yet.</li>
-            {% endfor %}
-        </ul>
+    <!-- Critical Threats -->
+    <div class="col-md-6">
+        <div class="card dashboard-card text-light border-danger">
+            <div class="card-header dashboard-header text-danger">
+                🚨 Critical Threats
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for threat in critical_threats %}
+                <li class="list-group-item bg-dark text-white border-bottom border-danger">
+                    <strong class="highlight">{{ threat.mission.title }}</strong> – {{ threat.level }}
+                    <br>{{ threat.description|truncatechars:70 }}
+                    <br><small class="text-muted">🕒 {{ threat.reported_on|date:"M d, H:i" }}</small>
+                </li>
+                {% empty %}
+                <li class="list-group-item bg-dark text-muted">No critical threats.</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 
-    <div class="col-md-4">
-        <h4>🪪 System Logs</h4>
-        <ul class="list-group">
-            {% for log in logs %}
-            <li class="list-group-item">
-                {{ log.action }} <br><small class="text-muted">{{ log.timestamp }}</small>
-            </li>
-            {% empty %}
-            <li class="list-group-item">No logs yet.</li>
-            {% endfor %}
-        </ul>
+    <!-- Logs -->
+    <div class="col-12">
+        <div class="card dashboard-card text-light border-light">
+            <div class="card-header dashboard-header text-light">
+                📜 Activity Log
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for log in logs %}
+                <li class="list-group-item bg-dark text-white border-bottom border-secondary">
+                    {{ log.action }}
+                    <br><small class="text-muted">🕒 {{ log.timestamp|date:"M d, H:i" }}</small>
+                </li>
+                {% empty %}
+                <li class="list-group-item bg-dark text-muted">No activity logs yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 </div>
 {% endblock %}
