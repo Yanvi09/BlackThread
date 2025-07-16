@@ -8,12 +8,51 @@
 <body>
     {% extends 'core/base.html' %}
 {% block content %}
-<h2>Log a New Threat</h2>
-<form method="post">
+<style>
+  .threat-form-header {
+    color: #ff4b4b;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+    text-shadow: 0 0 5px #ff4b4b;
+  }
+
+  .form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 0 15px #ff4b4b55;
+  }
+
+  .btn-submit {
+    display: block;
+    width: 100%;
+    font-weight: bold;
+    background-color: #ff4b4b33;
+    color: #ff4b4b;
+    border: 1px solid #ff4b4b;
+    box-shadow: 0 0 10px #ff4b4b33;
+    transition: 0.3s ease;
+  }
+
+  .btn-submit:hover {
+    background-color: #ff4b4b88;
+    color: #000;
+    box-shadow: 0 0 15px #ff4b4b;
+  }
+</style>
+
+<h2 class="threat-form-header">⚠️ Log a New Threat</h2>
+
+<div class="form-container">
+  <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button class="btn btn-danger">Submit</button>
-</form>
+    <button class="btn btn-submit mt-3">🚨 Submit Threat</button>
+  </form>
+</div>
 {% endblock %}
 
 </body>

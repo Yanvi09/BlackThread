@@ -8,24 +8,68 @@
 <body>
     {% extends 'core/base.html' %}
 {% block content %}
-<h2>Threat Logs</h2>
-<a href="{% url 'threat_create' %}" class="btn btn-danger mb-3">+ Report Threat</a>
-<table class="table table-dark table-striped">
-    <tr>
-        <th>Mission</th><th>Level</th><th>Description</th><th>Reported On</th><th>Action</th>
-    </tr>
-    {% for t in threats %}
-    <tr>
+<style>
+  .threat-header {
+    color: #ff4b4b;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    text-shadow: 0 0 5px #ff4b4b;
+  }
+
+  .btn-report {
+    display: block;
+    margin: 0 auto 20px auto;
+    font-weight: bold;
+    background-color: #ff4b4b33;
+    color: #ff4b4b;
+    border: 1px solid #ff4b4b;
+    box-shadow: 0 0 10px #ff4b4b55;
+    transition: 0.3s ease;
+  }
+
+  .btn-report:hover {
+    background-color: #ff4b4b88;
+    color: #000;
+    box-shadow: 0 0 15px #ff4b4b;
+  }
+</style>
+
+<h2 class="threat-header">🚨 Threat Logs</h2>
+<a href="{% url 'threat_create' %}" class="btn btn-report">+ Report New Threat</a>
+
+<div class="table-responsive">
+  <table class="table table-dark table-striped text-center align-middle">
+    <thead class="table-danger">
+      <tr>
+        <th>Mission</th>
+        <th>Level</th>
+        <th>Description</th>
+        <th>Reported On</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for t in threats %}
+      <tr>
         <td>{{ t.mission.title }}</td>
-        <td>{{ t.level }}</td>
+        <td>
+          <span class="badge bg-danger">{{ t.level }}</span>
+        </td>
         <td>{{ t.description }}</td>
         <td>{{ t.reported_on }}</td>
         <td>
-            <a href="{% url 'threat_delete' t.pk %}" class="btn btn-sm btn-danger">Delete</a>
+          <a href="{% url 'threat_delete' t.pk %}" class="btn btn-sm btn-outline-danger">🗑️ Delete</a>
         </td>
-    </tr>
-    {% endfor %}
-</table>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5" class="text-muted">No threats reported yet.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}
 
 </body>

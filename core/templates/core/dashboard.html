@@ -1,74 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 <body>
-    {% extends 'core/base.html' %}
+  {% extends 'core/base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="container py-4 text-light">
-    <h2 class="text-center mb-5">🧠 BlackThread: Secure Ops Dashboard</h2>
+<div class="container py-4">
+  <h2 class="text-center mb-4 text-light">🧠 BlackThread Secure Ops Interface</h2>
 
-    <div class="row g-4">
-        <!-- Engineer Management -->
-        <div class="col-md-6 col-lg-4">
-            <div class="card bg-secondary bg-opacity-10 border-light shadow-lg rounded-4 h-100">
-                <div class="card-body">
-                    <h4 class="card-title text-info">🧑‍💻 Engineers</h4>
-                    <p class="card-text">Track and manage field operatives.</p>
-                    <a href="{% url 'engineer_list' %}" class="btn btn-outline-info btn-sm">Launch</a>
-                </div>
-            </div>
-        </div>
+  <div class="row g-4">
 
-        <!-- Asset Tracker -->
-        <div class="col-md-6 col-lg-4">
-            <div class="card bg-secondary bg-opacity-10 border-light shadow-lg rounded-4 h-100">
-                <div class="card-body">
-                    <h4 class="card-title text-warning">🧰 Assets</h4>
-                    <p class="card-text">Inventory of tech & field tools.</p>
-                    <a href="{% url 'asset_list' %}" class="btn btn-outline-warning btn-sm">Launch</a>
-                </div>
-            </div>
+    <!-- Engineers -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card bg-dark text-light shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">🧑‍💻 Engineers</h5>
+          <p class="card-text">Manage deployed agents.</p>
+          <a href="{% url 'engineer_list' %}" class="btn btn-outline-light btn-sm">Launch</a>
         </div>
-
-        <!-- Missions -->
-        <div class="col-md-6 col-lg-4">
-            <div class="card bg-secondary bg-opacity-10 border-light shadow-lg rounded-4 h-100">
-                <div class="card-body">
-                    <h4 class="card-title text-success">🎯 Missions</h4>
-                    <p class="card-text">Plan & assign tactical objectives.</p>
-                    <a href="{% url 'mission_list' %}" class="btn btn-outline-success btn-sm">Launch</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Threat Log -->
-        <div class="col-md-6 col-lg-6">
-            <div class="card bg-danger bg-opacity-25 border-danger shadow-lg rounded-4 h-100">
-                <div class="card-body">
-                    <h4 class="card-title text-danger">🚨 Threat Logs</h4>
-                    <p class="card-text">Review all incoming threat signals.</p>
-                    <a href="{% url 'threat_list' %}" class="btn btn-danger btn-sm">View</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Activity Logs -->
-        <div class="col-md-6 col-lg-6">
-            <div class="card bg-dark bg-opacity-50 border-light shadow-lg rounded-4 h-100">
-                <div class="card-body">
-                    <h4 class="card-title text-light">📋 Activity Logs</h4>
-                    <p class="card-text">Every action across the system.</p>
-                    <a href="{% url 'activity_logs' %}" class="btn btn-outline-light btn-sm">Inspect</a>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+
+    <!-- Assets -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card bg-dark text-light shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">🧰 Assets</h5>
+          <p class="card-text">Field equipment & technology.</p>
+          <a href="{% url 'asset_list' %}" class="btn btn-outline-light btn-sm">Launch</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Missions -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card bg-dark text-light shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">🎯 Missions</h5>
+          <p class="card-text">Plan covert operations.</p>
+          <a href="{% url 'mission_list' %}" class="btn btn-outline-light btn-sm">Deploy</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Threat Logs -->
+    <div class="col-md-6 col-lg-6">
+      <div class="card bg-dark text-light shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">🚨 Threat Logs</h5>
+          <p class="card-text">Review potential threats.</p>
+          <a href="{% url 'threat_list' %}" class="btn btn-outline-light btn-sm">View</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity Logs -->
+    <div class="col-md-6 col-lg-6">
+      <div class="card bg-dark text-light shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">📋 Activity Logs</h5>
+          <p class="card-text">System-wide activity trail.</p>
+          <a href="{% url 'activity_logs' %}" class="btn btn-outline-light btn-sm">Inspect</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="col-12">
+      <div class="card bg-dark text-light shadow-sm">
+        <div class="card-body text-center">
+          <h5 class="card-title">📊 Threat Detection Overview</h5>
+          <hr class="text-secondary" />
+          <canvas id="trafficChart" style="max-height: 300px; cursor: pointer;"></canvas>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
+
+<!-- Chart.js Fullscreen Chart Script -->
+<script>
+  const chartCanvas = document.getElementById('trafficChart');
+
+  chartCanvas.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      chartCanvas.requestFullscreen().catch(err => console.error(err));
+    } else {
+      document.exitFullscreen();
+    }
+  });
+
+  new Chart(chartCanvas, {
+    type: 'line',
+    data: {
+      labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      datasets: [{
+        label: 'Threat Detections',
+        data: [12, 19, 8, 17, 10, 14, 9],
+        borderColor: '#0ff',
+        backgroundColor: 'rgba(0, 255, 255, 0.1)',
+        tension: 0.3,
+        fill: true,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          labels: { color: "#fff" }
+        }
+      },
+      scales: {
+        x: { ticks: { color: "#fff" } },
+        y: { ticks: { color: "#fff" } }
+      }
+    }
+  });
+</script>
 {% endblock %}
 
 </body>

@@ -6,109 +6,89 @@
     <title>Document</title>
 </head>
 <body>
-   {% extends 'core/base.html' %}
+    {% extends 'core/base.html' %}
 {% block content %}
+
 <style>
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    .form-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 30px;
+        background: rgba(0, 0, 0, 0.75);
+        border: 1px solid #00ffff66;
+        border-radius: 15px;
+        box-shadow: 0 0 18px #0ff8;
+        color: white;
     }
-    .glow-title {
+
+    .form-container h2 {
         color: #00ffff;
+        text-align: center;
         font-weight: bold;
-        font-size: 2rem;
-        animation: flicker 2s infinite alternate;
-        text-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+        margin-bottom: 25px;
+        text-shadow: 0 0 6px #0ff;
     }
 
-    @keyframes flicker {
-        0% { opacity: 1; text-shadow: 0 0 5px #0ff, 0 0 10px #0ff; }
-        50% { opacity: 0.8; text-shadow: 0 0 8px #0ff, 0 0 12px #0ff; }
-        100% { opacity: 1; text-shadow: 0 0 5px #0ff, 0 0 10px #0ff; }
-    }
-
-    .dashboard-card {
-        background-color: #111 !important;
-        border: 1px solid #444;
-        border-radius: 8px;
-        box-shadow: 0 0 12px #0ff3;
-    }
-
-    .dashboard-header {
-        border-bottom: 1px solid #333;
+    .form-group label {
         color: #0ff;
-        background-color: transparent;
         font-weight: 600;
+        margin-top: 10px;
     }
 
-    .highlight {
-        color: #ff004f;
+    .form-control {
+        background-color: #001d3d;
+        color: #fff;
+        border: 1px solid #0ff2;
+        border-radius: 8px;
+    }
+
+    .btn-glow {
+        background: #00ffff99;
+        color: #000;
+        font-weight: bold;
+        padding: 10px 25px;
+        border-radius: 8px;
+        border: none;
+        display: block;
+        margin: 30px auto 0;
+        box-shadow: 0 0 10px #00ffff99;
+        transition: 0.3s;
+    }
+
+    .btn-glow:hover {
+        background: #0ff;
+        box-shadow: 0 0 20px #00ffff;
+        color: black;
+    }
+
+    .back-link {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .back-link a {
+        color: #ccc;
+        text-decoration: underline;
+    }
+
+    .back-link a:hover {
+        color: #0ff;
     }
 </style>
 
-<h2 class="glow-title mb-4">🧠 BLACKTHREAD OPS CENTER</h2>
-
-<div class="row g-4">
-
-    <!-- Missions -->
-    <div class="col-md-6">
-        <div class="card dashboard-card text-light">
-            <div class="card-header dashboard-header">
-                🛰️ Latest Missions
-            </div>
-            <ul class="list-group list-group-flush">
-                {% for mission in missions %}
-                <li class="list-group-item bg-dark text-white border-bottom border-info">
-                    <strong class="text-info">{{ mission.title }}</strong> – {{ mission.status }}
-                    <br><small class="text-muted">📍 {{ mission.location }} | 🕒 {{ mission.created_on|date:"M d, H:i" }}</small>
-                </li>
-                {% empty %}
-                <li class="list-group-item bg-dark text-muted">No recent missions.</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-
-    <!-- Critical Threats -->
-    <div class="col-md-6">
-        <div class="card dashboard-card text-light border-danger">
-            <div class="card-header dashboard-header text-danger">
-                🚨 Critical Threats
-            </div>
-            <ul class="list-group list-group-flush">
-                {% for threat in critical_threats %}
-                <li class="list-group-item bg-dark text-white border-bottom border-danger">
-                    <strong class="highlight">{{ threat.mission.title }}</strong> – {{ threat.level }}
-                    <br>{{ threat.description|truncatechars:70 }}
-                    <br><small class="text-muted">🕒 {{ threat.reported_on|date:"M d, H:i" }}</small>
-                </li>
-                {% empty %}
-                <li class="list-group-item bg-dark text-muted">No critical threats.</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-
-    <!-- Logs -->
-    <div class="col-12">
-        <div class="card dashboard-card text-light border-light">
-            <div class="card-header dashboard-header text-light">
-                📜 Activity Log
-            </div>
-            <ul class="list-group list-group-flush">
-                {% for log in logs %}
-                <li class="list-group-item bg-dark text-white border-bottom border-secondary">
-                    {{ log.action }}
-                    <br><small class="text-muted">🕒 {{ log.timestamp|date:"M d, H:i" }}</small>
-                </li>
-                {% empty %}
-                <li class="list-group-item bg-dark text-muted">No activity logs yet.</li>
-                {% endfor %}
-            </ul>
-        </div>
+<div class="form-container">
+    <h2>🚀 Deploy New Operative</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-glow">Deploy Agent</button>
+    </form>
+    <div class="back-link">
+        <a href="{% url 'engineer_list' %}">← Back to Roster</a>
     </div>
 </div>
-{% endblock %}
 
+{% endblock %}
 
 </body>
 </html>
